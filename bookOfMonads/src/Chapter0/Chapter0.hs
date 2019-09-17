@@ -10,7 +10,7 @@ class Container c where
 
 instance Container [] where
   empty = []
-  insert x xs = x : xs
+  insert = (:)
 
 -- data Queue a =
 --   Queue
