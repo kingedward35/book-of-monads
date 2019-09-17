@@ -6,7 +6,7 @@ instance (Eq a, Eq b) => Eq (a, b) where
 
 class Container c where
   empty :: c a
-  insert :: a -> c a -> ca
+  insert :: a -> c a -> c a
 
 instance Container [] where
   empty = []
