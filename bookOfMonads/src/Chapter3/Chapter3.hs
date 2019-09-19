@@ -50,3 +50,33 @@ instance Functor ZipList where
 
 randomZipList :: ZipList Integer
 randomZipList = ZipList [1 .. 10]
+
+---------------------------------------------
+-- Chapter 3.3 Applicative Style
+-- do x <- [1 .. 3]       this can be written in the following fashion
+--    y <- [4 .. 6]       (+) <$> [1..3] <*> [4..6]
+--    return $ x + y
+----------------------------------------------
+-- Chapter 3.3.1 Applicative Goodies
+(<$) :: Functor f => a -> f b -> f a
+(<$) = undefined
+
+(<*) :: Applicative f => f a -> f b -> f a
+(<*) = undefined
+
+(*>) :: Applicative f => f a -> f b -> f b
+(*>) = undefined
+-- map toUpper <$> validateName name <*> validateAge age     -- this code is invalid
+-- Option 1
+-- do validateAge age
+--    map toUpper <$> validateName name
+-- Option 2
+-- do validateAge age
+--    m <- validateName name
+--    return $ map toUpper m
+-- Some other ways of potential validation
+-- map toUpper <$> validateName name <* validateAge age
+-- map toUpper <$ validateAge age <*> validateName name
+-- (\n -> Person n 20) <$> validateName validateName
+-- flip Person 20 <$> validateName name
+-- Person <$> validateName name <*> pure 20
