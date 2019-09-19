@@ -32,7 +32,7 @@ ap mbc mb = do
 --   pure :: a -> f a
 --   (<*>) :: f (a -> b) -> f a -> f b
 testFmap :: Monad m => (b -> c) -> m b -> m c
-testFmap f fa = return f `ap` fa
+testFmap f fa = return f <*> fa
 
 newtype ZipList a =
   ZipList
