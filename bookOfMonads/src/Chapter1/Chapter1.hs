@@ -120,6 +120,7 @@ flatten' ss = next ss id
 -- flatten' ss = \i -> let (r, i') = ss i in r i'
 f :: [a] -> (a -> [b]) -> [b]
 f = undefined
+
 -- concatMap'
 -- concatMap' xs f = concat (map f xs)
 --------------------------------------------------
@@ -135,3 +136,8 @@ f = undefined
 -- instance Monad Maybe where
 --   return = Just
 --   (>>=) = then_
+---------------------------------------------------
+-- Chapter 1.5
+fmap :: Functor f => (a -> b) -> f a -> f b
+class Functor f where
+  fmap :: (a -> b) -> f a -> f b
