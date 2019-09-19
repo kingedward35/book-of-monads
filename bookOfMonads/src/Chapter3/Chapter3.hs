@@ -22,4 +22,31 @@ ap mbc mb = do
   bc <- mbc
   b <- mb
   return $ bc b
+
 -- An Example of using fmap and ap: (+) <$> (Just 12) <*> (Just 77)
+---------------------------------------
+-- Chapter 3.2 Applicatives
+-- class Functor f =>
+--       Applicative f
+--   where
+--   pure :: a -> f a
+--   (<*>) :: f (a -> b) -> f a -> f b
+testFmap :: Monad m => (b -> c) -> m b -> m c
+testFmap f fa = return f `ap` fa
+
+newtype ZipList a =
+  ZipList
+    { getZipList :: [a]
+    }
+  deriving (Show)
+
+instance Applicative ZipList where
+  pure x = ZipList (repeat x) -- infinite list of x values
+  ZipList fs <*> ZipList xs = ZipList (zipWith (\f x -> f x) fs xs)
+
+instance Functor ZipList where
+  fmap _ (ZipList []) = ZipList []
+  fmap f (ZipList (x:xs)) = ZipList (f x : fmap f xs)
+
+randomZipList :: ZipList Integer
+randomZipList = ZipList [1 .. 10]
