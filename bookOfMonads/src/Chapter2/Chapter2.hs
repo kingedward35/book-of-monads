@@ -78,6 +78,7 @@ get = undefined
 testMap :: (a -> b) -> [a] -> [b]
 testMap _ [] = []
 testMap f xs = xs >>= return . f
+
 -- An Example of a Monad Comprehension
 -- relabel' (Node l r) = [Node l' r' | l' <- relabel' l, r' <- relabel' r]
 -- validatePerson name age = [Person name' age' | name' <- validateName name, age' <- validateAge age]
@@ -85,3 +86,25 @@ testMap f xs = xs >>= return . f
 -- Chapter 2.1.3 Bangs in Idris
 -- relabel (Node l r) = return (Node !(relabel l) !(relabel r))
 -- validatePerson name age = return (Person !(validateName name) !(validateAge age)) 
+----------------------------------------------
+-- Chapter 2.2 Pattern Matching and Fail
+getNumber :: IO (Maybe Int) -- get a number from the keyboard
+getNumber = undefined
+
+getNumber' :: IO Int -- retry until we a number
+getNumber' = do
+  n <- getNumber
+  case n of
+    Just m -> return m
+    Nothing -> getNumber'
+    -- printLine $ "Your number is " <> show n
+-- another way to right the above
+-- do Just n <- getNumber
+-- getNumber'' >>= \e ->
+--   case e of
+--     Just n -> printLine $ "Your number is " <> show n
+--     Nothing -> fail "Pattern match failure in do expression"
+-- An example in Idris
+-- getNumber' = do Just m <- getNumber
+--                   | Nothing => getNumber'
+                  --  return m
