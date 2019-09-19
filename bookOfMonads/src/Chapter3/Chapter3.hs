@@ -77,6 +77,6 @@ randomZipList = ZipList [1 .. 10]
 -- Some other ways of potential validation
 -- map toUpper <$> validateName name <* validateAge age
 -- map toUpper <$ validateAge age <*> validateName name
--- (\n -> Person n 20) <$> validateName validateName
+-- (\n -> Person n 20) <$> validateName name
 -- flip Person 20 <$> validateName name
 -- Person <$> validateName name <*> pure 20
