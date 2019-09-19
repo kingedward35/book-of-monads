@@ -53,3 +53,59 @@ map' f (x:xs) = f x : map' f xs
 
 singleton :: a -> [a]
 singleton x = [x]
+
+-- Chapter 1.3
+data Option a
+  = None
+  | Some a
+
+type Name = String
+
+data Person =
+  Person
+    { name :: Name
+    , age :: Int
+    }
+
+validateName :: String -> Option Name
+validateName = undefined
+
+validateAge :: Int -> Option Int
+validateAge = undefined
+
+validatePerson1 :: String -> Int -> Option Person
+validatePerson1 name age =
+  case validateName name of
+    None -> None
+    Some name ->
+      case validateAge age of
+        None -> None
+        Some age -> Some (Person name age)
+
+-- then_ o f = flatten (fmap f o)
+then_ :: Option a -> (a -> Option b) -> Option b
+then_ v g =
+  case v of
+    None -> None
+    Some v' -> g v'
+
+validatePerson2 :: String -> Int -> Option Person
+validatePerson2 name age =
+  validateName name `then_` \name' ->
+    validateAge age `then_` \age' -> Some (Person name' age')
+
+-- flip' map1 :: Maybe c -> (c -> d) -> Maybe d
+map1 :: (a -> b) -> Maybe a -> Maybe b
+map1 _ Nothing = Nothing
+map1 f (Just a) = Just (f a)
+
+singleton' :: a -> Maybe a
+singleton' = Just
+
+flatten :: Maybe (Maybe a) -> Maybe a
+flatten (Just (Just x)) = Just x
+flatten _ = Nothing
+-- flatten oo = then_ oo id
+-- flatten oo = \v g -> case v of
+  --                      Nothing -> Nothing
+  --                      Just v' -> g v'
