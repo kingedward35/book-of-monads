@@ -36,3 +36,20 @@ type State s a = s -> (a, s)
 
 test :: Int -> State Char Int
 test i = (i, )
+
+-- Chapter 1.2
+length' :: [a] -> Integer
+length' = foldr (\x -> (+) 1) 0
+
+concat' :: [a] -> [a] -> [a]
+concat' = foldr (:)
+
+concat1 :: [[a]] -> [a]
+concat1 = foldr (<>) []
+
+map' :: (a -> b) -> [a] -> [b]
+map' _ [] = []
+map' f (x:xs) = f x : map' f xs
+
+singleton :: a -> [a]
+singleton x = [x]
