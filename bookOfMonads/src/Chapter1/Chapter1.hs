@@ -105,7 +105,33 @@ singleton' = Just
 flatten :: Maybe (Maybe a) -> Maybe a
 flatten (Just (Just x)) = Just x
 flatten _ = Nothing
+
 -- flatten oo = then_ oo id
 -- flatten oo = \v g -> case v of
-  --                      Nothing -> Nothing
-  --                      Just v' -> g v'
+--                      Nothing -> Nothing
+--                      Just v' -> g v'
+-------------------------------------------------------------
+-- Chapter 1.4
+flatten' :: State s (State s a) -> State s a
+flatten' ss = next ss id
+
+-- flatten' ss = \i -> let (r, i') = ss i in id r i'
+-- -- in other words
+-- flatten' ss = \i -> let (r, i') = ss i in r i'
+f :: [a] -> (a -> [b]) -> [b]
+f = undefined
+-- concatMap'
+-- concatMap' xs f = concat (map f xs)
+--------------------------------------------------
+-- Monad as a context
+-- class Monad m where
+--   return :: a -> m a
+--   (>>=) :: m a -> (a -> m b) -> m b
+-- Monad as a box
+-- class Monad m where
+--   return :: a -> m a
+--   fmap :: (a -> b) -> m a -> m b
+--   join :: m (m a) -> m a
+-- instance Monad Maybe where
+--   return = Just
+--   (>>=) = then_
