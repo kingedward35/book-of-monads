@@ -1,3 +1,5 @@
+{-# LANGUAGE MonadComprehensions #-}
+
 module Chapter2 where
 
 data Tree a
@@ -27,7 +29,7 @@ validatePerson n a =
     validateAge a >>= \age' -> return (Person name' age')
 
 -----------------------------------------------
--- Chapter 2.1.1
+-- Chapter 2.1.1 Block/do Notation
 relabel :: Monad m => Tree a1 -> m (Tree a2)
 relabel (Node l r) = do
   l' <- relabel l
@@ -64,6 +66,7 @@ put = undefined
 
 get :: State s s
 get = undefined
+
 -- incrementCounter :: State Int Int
 -- incrementCounter = do
 --   n <- get
@@ -71,4 +74,10 @@ get = undefined
 --   return (n + 1)
 -- (>>) :: Monad m => m a -> m b -> m b
 -- m >> n = m >>= \_ -> n -- default definition
--- Chapter 2.1.2
+-- Chapter 2.1.2 Comprehensions
+testMap :: (a -> b) -> [a] -> [b]
+testMap _ [] = []
+testMap f xs = xs >>= return . f
+-- An Example of a Monad Comprehension
+-- relabel' (Node l r) = [Node l' r' | l' <- relabel' l, r' <- relabel' r]
+-- validatePerson name age = [Person name' age' | name' <- validateName name, age' <- validateAge age]
