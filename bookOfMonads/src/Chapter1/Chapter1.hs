@@ -1,5 +1,7 @@
 {-# LANGUAGE TupleSections #-}
 
+module Chapter1 where
+
 -- Chapter 1.1
 data Tree a
   = Leaf a
