@@ -81,3 +81,7 @@ testMap f xs = xs >>= return . f
 -- An Example of a Monad Comprehension
 -- relabel' (Node l r) = [Node l' r' | l' <- relabel' l, r' <- relabel' r]
 -- validatePerson name age = [Person name' age' | name' <- validateName name, age' <- validateAge age]
+----------------------------------------------
+-- Chapter 2.1.3 Bangs in Idris
+-- relabel (Node l r) = return (Node !(relabel l) !(relabel r))
+-- validatePerson name age = return (Person !(validateName name) !(validateAge age)) 
