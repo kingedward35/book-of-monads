@@ -2,9 +2,13 @@
 
 module Chapter0 where
 
+import Prelude hiding (Eq(..))
+
+class Eq a where
+  (==) :: a -> a -> Bool
+
 instance (Eq a, Eq b) => Eq (a, b) where
-  a == b = True
-  _ == _ = False
+  (x, y) == (x', y') = x == x' && y == y'
 
 class Container c where
   empty :: c a
