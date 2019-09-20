@@ -2,6 +2,8 @@
 
 module Chapter1 where
 
+import Prelude hiding (Functor(..))
+
 -- Chapter 1.1
 data Tree a
   = Leaf a
@@ -140,6 +142,7 @@ f = undefined
 --   (>>=) = then_
 ---------------------------------------------------
 -- Chapter 1.5
-fmap :: Functor f => (a -> b) -> f a -> f b
+-- fmap :: Functor f => (a -> b) -> f a -> f b
+-- fmap f fa = fa >>= \a -> return a
 class Functor f where
   fmap :: (a -> b) -> f a -> f b
