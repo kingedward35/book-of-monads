@@ -1,5 +1,7 @@
 module Chapter3 where
 
+import Prelude hiding (Applicative(..))
+
 -- Chapter 3.1 Lift2, Lift3, ..., Ap
 plus :: Maybe Int -> Maybe Int -> Maybe Int
 plus x y = do
@@ -34,6 +36,10 @@ ap mbc mb = do
 testFmap :: Monad m => (b -> c) -> m b -> m c
 testFmap f fa = return f <*> fa
 
+class Applicative f where
+  pure :: a -> f a
+  (<*>) :: f (a -> b) -> f a -> f b
+
 newtype ZipList a =
   ZipList
     { getZipList :: [a]
@@ -66,6 +72,7 @@ randomZipList = ZipList [1 .. 10]
 
 (*>) :: Applicative f => f a -> f b -> f b
 (*>) = undefined
+
 -- map toUpper <$> validateName name <*> validateAge age     -- this code is invalid
 -- Option 1
 -- do validateAge age
@@ -80,3 +87,12 @@ randomZipList = ZipList [1 .. 10]
 -- (\n -> Person n 20) <$> validateName name
 -- flip Person 20 <$> validateName name
 -- Person <$> validateName name <*> pure 20
+--------------------------------------------
+-- Chapter 3.4 Definition Using Tuples
+convertTriples :: (a, b, c) -> (a, (b, c))
+convertTriples (a, b, c) = (a, (b, c))
+
+convertQuadruples :: (a, b, c, d) -> (a, (b, (c, d)))
+convertQuadruples (a, b, c, d) = (a, (b, (c, d)))
+-- pure :: a -> f a
+-- pure x = fmap (\_ -> x) ()
