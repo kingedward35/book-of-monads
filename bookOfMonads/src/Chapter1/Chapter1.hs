@@ -32,6 +32,7 @@ f `next` g =
 pure' :: a -> State s a
 pure' x = \i -> (x, i)
 
+relabel' :: Num b1 => Tree b2 -> State b1 (Tree (b1, b2))
 relabel' (Leaf x) = \i -> (Leaf (i, x), i + 1)
 relabel' (Node l r) =
   relabel' l `next` \l' -> relabel' r `next` \r' -> pure' (Node l' r')
@@ -72,19 +73,23 @@ data Person =
     }
 
 validateName :: String -> Option Name
-validateName = undefined
+validateName str
+  | null str || length str > 30 = None
+  | otherwise = Some str
 
 validateAge :: Int -> Option Int
-validateAge = undefined
+validateAge a
+  | a < 18 = None
+  | otherwise = Some a
 
 validatePerson1 :: String -> Int -> Option Person
-validatePerson1 name age =
-  case validateName name of
+validatePerson1 n a =
+  case validateName n of
     None -> None
-    Some name ->
-      case validateAge age of
+    Some n' ->
+      case validateAge a of
         None -> None
-        Some age -> Some (Person name age)
+        Some a' -> Some (Person n' a')
 
 -- then_ o f = flatten (fmap f o)
 then_ :: Option a -> (a -> Option b) -> Option b
@@ -94,9 +99,9 @@ then_ v g =
     Some v' -> g v'
 
 validatePerson2 :: String -> Int -> Option Person
-validatePerson2 name age =
-  validateName name `then_` \name' ->
-    validateAge age `then_` \age' -> Some (Person name' age')
+validatePerson2 name' age' =
+  validateName name' `then_` \name'' ->
+    validateAge age' `then_` \age'' -> Some (Person name'' age'')
 
 -- flip' map1 :: Maybe c -> (c -> d) -> Maybe d
 map1 :: (a -> b) -> Maybe a -> Maybe b
