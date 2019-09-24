@@ -33,9 +33,8 @@ ap mbc mb = do
 --   where
 --   pure :: a -> f a
 --   (<*>) :: f (a -> b) -> f a -> f b
-testFmap :: Monad m => (b -> c) -> m b -> m c
-testFmap f fa = return f <*> fa
-
+-- testFmap :: Monad m => (b -> c) -> m b -> m c
+-- testFmap f fa = return f <*> fa
 class Applicative f where
   pure :: a -> f a
   (<*>) :: f (a -> b) -> f a -> f b
@@ -89,10 +88,26 @@ randomZipList = ZipList [1 .. 10]
 -- Person <$> validateName name <*> pure 20
 --------------------------------------------
 -- Chapter 3.4 Definition Using Tuples
+class Functor f =>
+      Monoidal f
+  where
+  unit :: f ()
+  (**) :: f a -> f b -> f (a, b)
+
 convertTriples :: (a, b, c) -> (a, (b, c))
 convertTriples (a, b, c) = (a, (b, c))
 
 convertQuadruples :: (a, b, c, d) -> (a, (b, (c, d)))
 convertQuadruples (a, b, c, d) = (a, (b, (c, d)))
+
 -- pure :: a -> f a
 -- pure x = fmap (\_ -> x) ()
+-- (<*>) :: f (a -> b) -> f a -> f b
+-- f <*> x = fmap (\(g, y) -> g y) (f ** x)
+-- Excercise 3.5
+unit' :: Applicative f => f ()
+unit' = pure ()
+
+(**=) :: Applicative f => f a -> f b -> f (a, b)
+-- (**=) = undefined
+fa **= fb = (,) <$> fa <*> fb
