@@ -39,6 +39,12 @@ class Applicative f where
   pure :: a -> f a
   (<*>) :: f (a -> b) -> f a -> f b
 
+instance Applicative ((,) a) where
+  pure x = (mempty, x)
+  (u, f) <*> (v, x) = (u <> v, f x)
+  -- pure x = (x, _)
+  -- (<*>) (a, _) (a', _) = (a a', _)
+
 newtype ZipList a =
   ZipList
     { getZipList :: [a]
