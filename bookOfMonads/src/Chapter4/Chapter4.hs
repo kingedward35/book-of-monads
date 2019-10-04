@@ -27,3 +27,12 @@ sequenceApp (x:xs) = (:) <$> x <*> sequenceApp xs
 
 mapM'' :: Monad m => (a -> m b) -> [a] -> m [b]
 mapM'' f = sequence' . map f
+
+zipWithM :: Monad m => (a -> b -> m c) -> [a] -> [b] -> m [c]
+zipWithM _ [] _ = return []
+zipWithM _ _ [] = return []
+zipWithM f as bs = sequence' $ zipWith f as bs
+
+replicateM :: Monad m => Int -> m a -> m [a]
+replicateM 0 _ = return []
+replicateM n ma = sequence' $ replicate n ma
