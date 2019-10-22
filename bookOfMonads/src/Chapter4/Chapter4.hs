@@ -86,3 +86,26 @@ class Functor f =>
   traverse' :: Applicative m => (a -> m b) -> f a -> m (f b)
   sequenceA' :: Applicative m => f (m a) -> m (f a)
   sequence1 :: Monad m => f (m a) -> m (f a)
+
+-- Chapter 4.2.1 Doing Nothing While Traversing
+-- type Identity a = a
+-- instance Monad Identity where
+--   return :: a -> a
+--   return x = x -- also return = id
+--   (>>=) :: (a -> b) -> a -> b
+--   (>>=) f = f -- also (>>=) = id
+-- instance Functor Identity where
+--   fmap :: (a -> b) -> a -> b
+--   fmap = id
+newtype Identity a =
+  I a
+
+instance Monad Identity where
+  return :: a -> Identity a
+  return = I
+  (>>=) :: Identity a -> (a -> Identity b) -> Identity b
+  I a >>= f = f a
+
+instance Functor Identity where
+  fmap :: (a -> b) -> Identity a -> Identity b
+  fmap f (I x) = I $ f x
