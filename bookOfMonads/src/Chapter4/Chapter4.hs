@@ -63,9 +63,26 @@ ifM cond th el = do
   if c
     then th
     else el
+
 -- ifM' =
 --   liftM3
 --     (\c t e ->
 --        if c
 --          then t
 --          else e)
+-- Chapter 4.2 Traversables
+fmap f Nothing = Nothing
+fmap f (Just x) = Just (f x)
+
+mapM f Nothing = pure Nothing
+mapM f (Just x) = fmap Just (f x)
+mapM f Nothing = pure Nothing
+mapM f (Just x) = Just <$> f x
+
+class Functor f =>
+      Traversable f
+  where
+  mapM1 :: Monad m => (a -> m b) -> f a -> m (f b)
+  traverse' :: Applicative m => (a -> m b) -> f a -> m (f b)
+  sequenceA' :: Applicative m => f (m a) -> m (f a)
+  sequence1 :: Monad m => f (m a) -> m (f a)

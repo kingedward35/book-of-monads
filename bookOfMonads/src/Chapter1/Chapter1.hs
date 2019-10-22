@@ -106,7 +106,7 @@ validatePerson2 name' age' =
 -- flip' map1 :: Maybe c -> (c -> d) -> Maybe d
 map1 :: (a -> b) -> Maybe a -> Maybe b
 map1 _ Nothing = Nothing
-map1 f (Just a) = Just (f a)
+map1 f' (Just a) = Just (f' a)
 
 singleton' :: a -> Maybe a
 singleton' = Just
